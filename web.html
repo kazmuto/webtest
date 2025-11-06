@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script type="module" defer>
+      // Chrome DevTools (chrome://inspect) のConsoleで実行
+console.log('isSecureContext:', window.isSecureContext);
+console.log('crypto:', window.crypto);
+console.log('crypto.subtle:', window.crypto?.subtle);
+console.log('location:', window.location.href);
+
+      import PlayerSDK from "./playersdk.js";
+
+      const videoinfoURL = "https://archive.hsk-stg.st.nhk/npd3/7fe1-0408/20251106/42b2-1-1-010c8b6fed932d2862b8c59524c2de78/videoinfo-870d7b66b070330a8b65120610352715.json";
+      const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl9zdCI6IjEiLCJzZXJ2aWNlX2xldmVsIjoiMSIsImV4cCI6MTc2MjQ3NjEyOCwibGljZW5zZVR5cGUiOiIyIn0.DHrJ02sV9VdbdqguKGYjQSWrxGvrasNYbYB6sXdFNsNhlzrL4cyjqYeznnEXL_P4kvHX_aQDa1TTBc7_oDx7NaJjQb_bsYyTqxYT4YkoXwbnfFtr83z0WCuKOhOJz6X9GU8epK1_QIQLSZsGslrmI7AAjCxgym61begc4LEhOp3YgVybCodY-dkqXX_z8TnxhRnRJAY7iVp4UIJLOMJPtqPHLXHufFUlzdMwrIxMAVDDiTAg1YIKJdFtOOekK85DpZsyH8tCfPI9baw99205JJzGCW5sjlMOV8f_PVq8IoBQK_kqTMmbxjQL4ctDX7LfyYF8HzGva_uWIfu3Y_gytg";
+
+      const player = await PlayerSDK.create(
+        {
+          controlJsonUrl: "https://simul.hsk-stg.st.nhk/npd3/asset/control.json",
+          drcsAltUrl: "https://archive.hsk-stg.st.nhk/npd3/config/drcs-subst.json",
+          fairplayCertUrl: "https://licence.hsk-stg.st.nhk/fps/license",
+          fairplayLicenseUrl: "https://licence.hsk-stg.st.nhk/fps/license",
+          widevineLicenseUrl: "https://licence.hsk-stg.st.nhk/widevine/license",
+        },
+        document.getElementById("video"),
+        document.getElementById("msg"),
+      );
+
+      await player.initWithVideoinfoUrl(
+        videoinfoURL, // videoinfo.json のURL
+        0, // 再生開始位置
+        undefined, // 再生終了位置
+        token, // AuthToken
+        false, // cmcd送信設定
+      );
+    </script>
+  
+    <style>
+      #container {
+        position: relative;
+        width: 640px;
+        height: 360px;
+      }
+
+      video  {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      #msg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <video id="video" controls></video>
+      <div id="msg"></div>
+    </div>  
+  </body>
+</html>

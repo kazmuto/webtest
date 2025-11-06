@@ -7,6 +7,16 @@ console.log('crypto:', window.crypto);
 console.log('crypto.subtle:', window.crypto?.subtle);
 console.log('location:', window.location.href);
 
+// デバッグ用：WebViewでサポートされているか確認
+navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
+    initDataTypes: ['cenc'],
+    videoCapabilities: [{
+        contentType: 'video/mp4; codecs="avc1.42E01E"'
+    }]
+}])
+.then(() => console.log('Widevine supported!'))
+.catch(err => console.error('Widevine NOT supported:', err));
+
       import PlayerSDK from "./playersdk.js";
 
       const videoinfoURL = "https://archive.hsk-stg.st.nhk/npd3/7fe1-0408/20251106/42b2-1-1-010c8b6fed932d2862b8c59524c2de78/videoinfo-870d7b66b070330a8b65120610352715.json";

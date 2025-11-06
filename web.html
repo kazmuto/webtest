@@ -77,6 +77,20 @@ navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
     console.error('❌ テスト4失敗:', err.name, '-', err.message);
 });
 
+// Widevine以外も試す
+const keySystems = [
+    'com.widevine.alpha',
+    'com.widevine',
+    'org.w3.clearkey',  // ClearKey（非暗号化テスト用）
+    'com.microsoft.playready'
+];
+
+keySystems.forEach(keySystem => {
+    navigator.requestMediaKeySystemAccess(keySystem, [{}])
+        .then(() => console.log('✅', keySystem, 'サポートあり'))
+        .catch(err => console.log('❌', keySystem, ':', err.message));
+});
+
 
 // デバッグ用：WebViewでサポートされているか確認
 navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{

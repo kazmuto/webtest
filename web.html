@@ -16,6 +16,68 @@ console.log('navigator.requestMediaKeySystemAccess:',
 const video = document.createElement('video');
 console.log('video.setMediaKeys:', typeof video.setMediaKeys);
 
+
+
+// テスト1: 最小構成
+console.log('=== テスト1: 最小構成 ===');
+navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
+    initDataTypes: ['cenc']
+}])
+.then(access => {
+    console.log('✅ テスト1成功');
+    console.log('Configuration:', access.getConfiguration());
+})
+.catch(err => {
+    console.error('❌ テスト1失敗:', err.name, '-', err.message);
+});
+
+// テスト2: videoCapabilities付き
+console.log('=== テスト2: videoCapabilities付き ===');
+navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
+    initDataTypes: ['cenc'],
+    videoCapabilities: [{
+        contentType: 'video/mp4; codecs="avc1.42E01E"'
+    }]
+}])
+.then(access => {
+    console.log('✅ テスト2成功');
+    console.log('Configuration:', access.getConfiguration());
+})
+.catch(err => {
+    console.error('❌ テスト2失敗:', err.name, '-', err.message);
+});
+
+// テスト3: 空の設定
+console.log('=== テスト3: 空の設定 ===');
+navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{}])
+.then(access => {
+    console.log('✅ テスト3成功');
+    console.log('Configuration:', access.getConfiguration());
+})
+.catch(err => {
+    console.error('❌ テスト3失敗:', err.name, '-', err.message);
+});
+
+// テスト4: 複数のvideoCapabilities
+console.log('=== テスト4: 複数のcodecs ===');
+navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
+    initDataTypes: ['cenc'],
+    videoCapabilities: [
+        { contentType: 'video/mp4; codecs="avc1.42E01E"' },
+        { contentType: 'video/mp4; codecs="avc1.4d401e"' },
+        { contentType: 'video/mp4; codecs="avc1.640028"' },
+        { contentType: 'video/mp4' }  // codecs指定なし
+    ]
+}])
+.then(access => {
+    console.log('✅ テスト4成功');
+    console.log('Configuration:', access.getConfiguration());
+})
+.catch(err => {
+    console.error('❌ テスト4失敗:', err.name, '-', err.message);
+});
+
+
 // デバッグ用：WebViewでサポートされているか確認
 navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
     initDataTypes: ['cenc'],

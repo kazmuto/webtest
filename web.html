@@ -7,6 +7,15 @@ console.log('crypto:', window.crypto);
 console.log('crypto.subtle:', window.crypto?.subtle);
 console.log('location:', window.location.href);
 
+// MediaKeys関連のAPIが存在するか
+console.log('MediaKeys:', typeof window.MediaKeys);
+console.log('navigator.requestMediaKeySystemAccess:', 
+    typeof navigator.requestMediaKeySystemAccess);
+
+// HTMLMediaElement.setMediaKeys が存在するか
+const video = document.createElement('video');
+console.log('video.setMediaKeys:', typeof video.setMediaKeys);
+
 // デバッグ用：WebViewでサポートされているか確認
 navigator.requestMediaKeySystemAccess('com.widevine.alpha', [{
     initDataTypes: ['cenc'],
